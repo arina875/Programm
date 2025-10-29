@@ -1,0 +1,65 @@
+#!/bin/bash
+
+dir="$1"
+mode="$2"
+date="$3"
+
+if [ ! -d "$dir" ]; then
+    echo "Директория '$dir' не существует"
+    exit 1
+fi
+
+if [ ! -w "$dir" ]; then
+    echo "Нет прав на запись в директорию '$dir'"
+    exit 1
+fi
+
+cd "$dir" || exit 1
+
+case "$mode" in
+    1)
+        echo "Архивирование файлов в '$dir'"
+        
+        curdate=$(date +%Y%m%d)
+        
+        for file in *; do
+            if [ -f "$file" ] && [ "$file" != "*" ]; then
+                archname="${file}_${curdate}.tar"
+                tar -cf "$archname" "$file"
+                if [ $? -eq 0 ]; then
+                    echo "$archname создан"
+                else
+                    echo "Не удалось создать архив"
+                fi
+            fi
+        done
+        ;;
+        
+    2)
+        if [ -z "$date" ]; then
+            echo "Необходимо указать дату в формате YYYYMMDD"
+            exit 1
+        fi
+        
+        for file in *; do
+            if [ -f "$file" ] && [ "$file" != "*" ]; then
+                filedate="${file##*_}"
+                if echo "$filedate" | grep -qE '^[0-9]{8}$'; then
+                    if [ "$filedate" -lt "$date" ]; then
+                        rm "$file"
+                        if [ $? -eq 0 ]; then
+                            echo "$file удален"
+                        else
+                        echo "Не удалось удалить $file"
+                        fi
+        	    fi
+        	fi
+	    fi
+        done
+        ;;
+        
+    *)
+        echo "Ошибка"
+        exit 1
+        ;;
+esac
