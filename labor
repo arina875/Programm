@@ -51,13 +51,13 @@ int main (int argc, char **argv){
             max_row = i;
         }
     }
-    printf("Максимальный элемент 4-го столбца: matrix[%d][3] = %d\n", max_row, >
+    printf("Максимальный элемент 4-го столбца: matrix[%d][3] = %d\n", max_row, max);
     double s = 10.0;
     for (int j = 0; j < m; j++) {
         s += exp(1 - matrix[1][j]);
     }
     printf("Сумма S = %.2f\n", s);
-    printf("Замена максимального элемента 4-го столбца на S\n", max_row, matrix>
+    printf("Замена максимального элемента 4-го столбца на S\n", max_row, matrix[max_row][3]);
     matrix[max_row][3] = (int)s;
     printf("\nНовая матрица:\n");
     for (int i = 0; i < n; i++){
