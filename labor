@@ -62,8 +62,15 @@ int main (int argc, char **argv){
             }
         }
     }
-*/
-            fscanf(file, "%d", &matrix[i][j]);
+*/  
+    int temp;
+    if (fscanf(file, "%d", &temp) != EOF) {
+        printf("Предупреждение: в файле остались непрочитанные данные\n");
+    }
+    
+    fclose(file);
+    
+           // fscanf(file, "%d", &matrix[i][j]);
         }
     }
     fclose(file);
