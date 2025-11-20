@@ -25,9 +25,44 @@ int main (int argc, char **argv){
     }
 
     int **matrix = (int**) malloc (n * sizeof(int*));
+
+    if (matrix == NULL) {
+        printf("Ошибка выделения памяти для указателей\n");
+        fclose(file);
+        return 1;
+    }
+
     for (int i = 0; i<n; i++){
         matrix[i] = (int*) malloc (m * sizeof(int));
+        
+        if (matrix[i] == NULL) {
+            printf("Ошибка выделения памяти для строки\n");
+
+            for (int j = 0; j < i; j++) {
+                free(matrix[j]);
+            }
+            free(matrix);
+            fclose(file);
+            return 1;
+        }
+
         for (int j = 0; j<m; j++){
+/*
+            if (fscanf(file, "%d", &matrix[i][j]) != 1) {
+                printf("Ошибка чтения элемента matrix[%d][%d] из файла\n", i, j);
+                printf("Убедитесь, что файл содержит достаточное количество чисел\n");
+                
+                // Освобождаем память
+                for (int k = 0; k <= i; k++) {
+                    free(matrix[k]);
+                }
+                free(matrix);
+                fclose(file);
+                return 1;
+            }
+        }
+    }
+*/
             fscanf(file, "%d", &matrix[i][j]);
         }
     }
