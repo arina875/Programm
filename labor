@@ -47,12 +47,11 @@ int main (int argc, char **argv){
         }
 
         for (int j = 0; j<m; j++){
-/*
+
             if (fscanf(file, "%d", &matrix[i][j]) != 1) {
                 printf("Ошибка чтения элемента matrix[%d][%d] из файла\n", i, j);
                 printf("Убедитесь, что файл содержит достаточное количество чисел\n");
                 
-                // Освобождаем память
                 for (int k = 0; k <= i; k++) {
                     free(matrix[k]);
                 }
@@ -62,17 +61,12 @@ int main (int argc, char **argv){
             }
         }
     }
-*/  
+  
     int temp;
     if (fscanf(file, "%d", &temp) != EOF) {
         printf("Предупреждение: в файле остались непрочитанные данные\n");
     }
     
-    fclose(file);
-    
-           // fscanf(file, "%d", &matrix[i][j]);
-        }
-    }
     fclose(file);
 
     printf("Вывод матрицы:\n", n, m);
