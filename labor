@@ -16,7 +16,7 @@ int main (int argc, char **argv){
     } 
 	
     int n, m;
-	if (fscanf(file, %d %d, &n, &m) != 2){
+	if (fscanf(file, "%d %d", &n, &m) != 2){
 		printf ("Убедитесь, что файл содержит 2 числа в первой строке (размеры матрицы)\n");
 		fclose(file);
 		return 1;
