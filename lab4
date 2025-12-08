@@ -1,0 +1,243 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+void pyzirkom (int massiv[], int size){
+    for (int i=0; i<size; i++){
+        for(int j=0; j<size-i; j++){
+            if (massiv[j]>massiv[j+1]){
+                int a = massiv[j];
+                massiv[j] = massiv[j + 1];
+                massiv[j + 1] = a;
+            }
+        }
+    }
+}
+
+void vstavkami (int massiv[], int size){
+    for (int i=1; i<size; i++){
+        int b = massiv[i];
+        int j = i - 1;
+
+        while(j >= 0 && massiv[j] > b){
+            massiv[j + 1] = massiv[j];
+            j = j - 1;
+        }
+        massiv[j + 1] = b;
+    }
+}
+
+
+void merge(int mas[], int left, int ser, int right){
+    int i, j, k;
+    int n1 = ser - left + 1;
+    int n2 = right - ser;
+
+    int *leftmas = (int*)malloc(n1 * sizeof(int));
+    int *rightmas = (int*)malloc(n2 * sizeof(int));
+
+    for (i=0; i<n1; i++){
+        leftmas[i]=mas[left + i];
+    }
+    for (j=0; j<n2; j++){
+        rightmas[j]=mas[ser + 1 + j];
+    }
+
+    i = 0;
+    j = 0;
+    k = left;
+
+    while (i<n1 && j<n2){
+        if (leftmas[i] <= rightmas[j]){
+            mas[k]=leftmas[i];
+            i++;
+        }else{
+            mas[k]=rightmas[j];
+            j++;
+        }
+        k++;
+    }
+    while (i<n1){
+        mas[k]=leftmas[i];
+        i++;
+        k++;
+    }
+    while (j<n2){
+        mas[k]=rightmas[j];
+        j++;
+        k++;
+    }
+    free(leftmas);
+    free(rightmas);
+}
+
+
+void sliyaniem(int mas[], int left, int right) {
+    if (left < right) {
+        int ser = left + (right - left) / 2;
+
+        sliyaniem(mas, left, ser);
+        sliyaniem(mas, ser + 1, right);
+
+        merge(mas, left, ser, right);
+    }
+}
+
+void results(double times[][3], int sizes[], int num_sizes);
+
+
+
+int main(){
+
+    int sizes[]={10, 1000, 10000, 100000};
+    int num_sizes = sizeof(sizes)/sizeof(sizes[0]);
+
+
+    int *massiv = (int*)malloc(10 * sizeof(int));
+    for (int i=0; i<10; i++){
+        massiv[i] = rand() % 100;
+    }
+
+    for (int i=0; i<10; i++){
+        printf("%d\n", massiv[i]);
+    }
+
+
+//    printf("Сортировка пузырьком\n");
+    clock_t start1 = clock();
+    pyzirkom(massiv, 10);
+    clock_t end1 = clock();
+    double seconds1 = (double)(end1 - start1) / CLOCKS_PER_SEC;
+
+/*    for (int i=0; i<10; i++){
+        printf("\n%d", massiv[i]);
+    }
+
+
+    printf("\nСортировка вставками\n");
+*/  clock_t start2 = clock();
+    vstavkami (massiv, 10);
+    clock_t end2 = clock();
+    double seconds2 = (double)(end2 - start2) / CLOCKS_PER_SEC;
+
+
+//    printf("Сортировка слиянием:\n");
+
+    clock_t start3 = clock();
+    sliyaniem(massiv, 0, 9);
+    clock_t end3 = clock();
+    double seconds3 = (double)(end3 - start3) / CLOCKS_PER_SEC;
+
+    int *massiv2 = (int*)malloc(1000 * sizeof(int));
+       for (int i=0; i<1000; i++){
+        massiv2[i] = rand() % 10000;
+    }
+
+
+//    printf("Сортировка пузырьком\n");
+    clock_t start4 = clock();
+    pyzirkom(massiv2, 1000);
+    clock_t end4 = clock();
+    double seconds4 = (double)(end4 - start4) / CLOCKS_PER_SEC;
+
+
+//    printf("\nСортировка вставками\n");
+    clock_t start5 = clock();
+    vstavkami (massiv2, 1000);
+    clock_t end5 = clock();
+    double seconds5 = (double)(end5 - start5) / CLOCKS_PER_SEC;
+
+
+//    printf("Сортировка слиянием:\n");
+    clock_t start6 = clock();
+    sliyaniem(massiv2, 0, 999);
+    clock_t end6 = clock();
+    double seconds6 = (double)(end6 - start6) / CLOCKS_PER_SEC;
+
+
+
+
+    int *massiv3 = (int*)malloc(10000 * sizeof(int));
+    for (int i=0; i<10000; i++){
+       massiv3[i] = rand() % 100000;
+    }
+
+
+//    printf("Сортировка пузырьком\n");
+    clock_t start7 = clock();
+    pyzirkom(massiv3, 10000);
+    clock_t end7 = clock();
+    double seconds7 = (double)(end7 - start7) / CLOCKS_PER_SEC;
+
+
+ //   printf("\nСортировка вставками\n");
+    clock_t start8 = clock();
+    vstavkami (massiv3, 10000);
+    clock_t end8 = clock();
+    double seconds8 = (double)(end8 - start8) / CLOCKS_PER_SEC;
+
+
+//    printf("Сортировка слиянием:\n");
+    clock_t start9 = clock();
+    sliyaniem(massiv3, 0, 9999);
+    clock_t end9 = clock();
+    double seconds9 = (double)(end9 - start9) / CLOCKS_PER_SEC;
+
+
+
+
+    int *massiv4 = (int*)malloc(100000 * sizeof(int));
+    for (int i=0; i<100000; i++){
+        massiv4[i] = rand() % 1000000;
+   }
+
+
+//    printf("Сортировка пузырьком\n");
+    clock_t start10 = clock();
+    pyzirkom(massiv4, 100000);
+    clock_t end10 = clock();
+    double seconds10 = (double)(end10 - start10) / CLOCKS_PER_SEC;
+
+
+//    printf("\nСортировка вставками\n");
+    clock_t start11 = clock();
+    vstavkami (massiv4, 100000);
+    clock_t end11 = clock();
+    double seconds11 = (double)(end11 - start11) / CLOCKS_PER_SEC;
+
+
+//    printf("Сортировка слиянием:\n");
+    clock_t start12 = clock();
+    sliyaniem(massiv4, 0, 99999);
+    clock_t end12 = clock();
+    double seconds12 = (double)(end12 - start12) / CLOCKS_PER_SEC;
+
+    double times[][3]={
+        {seconds1, seconds2, seconds3},
+        {seconds4, seconds5, seconds6},
+        {seconds7, seconds8, seconds9},
+        {seconds10, seconds11, seconds12}
+    };
+
+
+    void results(double times[][3], int sizes[], int num_sizes);
+    printf("\n=====================================================\n");
+    printf("| Размер массива |         Время выполнения (с)       |\n");
+    printf("|                |====================================|\n");
+    printf("|                |  Пузырьком | Вставками  | Слиянием |\n");
+    printf("=======================================================\n");
+
+        for (int i = 0; i < num_sizes; i++) {
+            printf("| %13d | %10.6f | %10.6f | %8.6f |\n",
+                   sizes[i], times[i][0], times[i][1], times[i][2]);
+        }
+    printf("=======================================================\n");
+
+
+    free(massiv);
+    free(massiv2);
+    free(massiv3);
+    free(massiv4);
+
+return 0;
+}
